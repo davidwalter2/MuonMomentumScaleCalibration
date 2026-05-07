@@ -13,10 +13,6 @@ ROOT.ROOT.EnableImplicitMT()
 import numpy as np
 import hdf5plugin
 import h5py
-# from utils import lumitools
-import wremnants
-import narf
-import narf.lumitools
 
 
 status = ROOT.gInterpreter.Declare('#include "aggregategrads.cpp"')
@@ -138,10 +134,6 @@ chainjpsi.Add("/scratch/bruschin/cmsasymow/CMSSW_10_6_26/src/Analysis/HitAnalyze
 chainjpsi.Add("/gpfs/ddn/srm/cms/store/user/dbruschi/Charmonium/Charmonium2018C_v722_layerbylayer/240118_144458/000*/globalcor_data_0_*.root") #C
 chainjpsi.Add("/gpfs/ddn/srm/cms/store/user/dbruschi/Charmonium/Charmonium2018D_v722_layerbylayer/240118_154557/000*/globalcor_data_0_*.root") #D
 
-wremdir = os.environ["WREM_BASE"]
-
-jsonhelper = narf.lumitools.make_jsonhelper(f"{wremdir}/wremnants-data/data/Cert_314472-325175_13TeV_UL2018_Collisions18_HLT_IsoMu24_v_CustomJSON.txt")
-
 filenameinfo = chainjpsi.GetListOfFiles()[0].GetTitle()
 finfo = ROOT.TFile.Open(filenameinfo)
 runtree = finfo.Get("runtree")
@@ -154,8 +146,6 @@ print(dj.Sum("edmvalref").GetValue())
 # print(dj.Max("gradmax").GetValue())
 
 # assert(0)
-
-dj = dj.Filter(jsonhelper, ["run", "lumi"], "jsonfilter")
 
 dj = dj.Filter(" || ".join(hlt_paths))
 
